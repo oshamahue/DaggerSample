@@ -7,8 +7,8 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Scope
-
 
 @Module
 class BaseUrlModule {
@@ -21,31 +21,17 @@ class RepositoryModule {
 
     @Provides
     fun provideLoginApi(url: String): LoginApi {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        val client: OkHttpClient =
-            OkHttpClient.Builder().addInterceptor(interceptor).build()
-
-        val retrofit = Retrofit.Builder()
-            .client(client)
-            .baseUrl(url)
-            .build()
-        return retrofit.create(LoginApi::class.java)
+        val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        val retrofit = Retrofit.Builder().client(client).baseUrl(url).build()
+        return retrofit.create()
     }
 }
 
 @Component(modules = [RepositoryModule::class, BaseUrlModule::class])
 @RepositoryScope
 interface RepositoryComponent {
-    fun loginApi(): LoginApi
-
-    @Component.Factory
-    interface Factory {
-        fun create(
-            repositoryModule: RepositoryModule,
-            baseUrlModule: BaseUrlModule
-        ): RepositoryComponent
-    }
+    val loginApi: LoginApi
 }
 
 @Scope
