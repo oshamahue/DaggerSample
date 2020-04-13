@@ -1,0 +1,5 @@
+include ':login'
+include ':app'
+include ':api'
+include ':repository'
+rootProject.name = "DaggerPg"
