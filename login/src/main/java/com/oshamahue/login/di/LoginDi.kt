@@ -1,8 +1,7 @@
 package com.oshamahue.login.di
 
-import com.oshamahue.daggermultimodule.di.ApplicationComponent
+import com.oshamahue.daggerpg.di.ApplicationComponent
 import com.oshamahue.login.LoginFragment
-import com.oshamahue.login.viewmodel.LoginViewModel
 import dagger.Component
 import javax.inject.Scope
 

@@ -1,4 +1,4 @@
-package com.oshamahue.daggermultimodule.di
+package com.oshamahue.daggerpg.di
 
 import com.oshamahue.api.LoginApi
 import com.oshamahue.repository.LoginRepository
@@ -20,13 +20,10 @@ class ApplicationModule {
 interface ApplicationComponent {
     @Component.Factory
     interface Factory {
-        fun create(
-            repositoryComponent: RepositoryComponent,
-            module: ApplicationModule
-        ): ApplicationComponent
+        fun create(repositoryComponent: RepositoryComponent): ApplicationComponent
     }
 
-    fun loginRepository(): LoginRepository
+    val loginRepository: LoginRepository
 }
 
 @Scope
