@@ -23,21 +23,23 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val loginComponent = DaggerLoginComponent.builder()
-            .applicationComponent(appComponent)
-            .build()
+        val loginComponent = DaggerLoginComponent.factory().create(appComponent)
         loginComponent.inject(this)
         viewModel.loginLiveData.observe(viewLifecycleOwner) { result ->
-            if (result) {
-                showToast("Login successful")
-            } else {
-                showToast("Login not successful")
-            }
+            handleResult(result)
         }
         buttonLogin.setOnClickListener {
             if (editTextUsername.text.isNotBlank() && editTextPassword.text.isNotBlank()) {
                 viewModel.login(editTextUsername.text.toString(), editTextPassword.text.toString())
             }
+        }
+    }
+
+    private fun handleResult(result: Boolean) {
+        if (result) {
+            showToast("Login successful")
+        } else {
+            showToast("Login not successful")
         }
     }
 

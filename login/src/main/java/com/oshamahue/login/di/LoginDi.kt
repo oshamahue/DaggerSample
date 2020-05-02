@@ -5,13 +5,16 @@ import com.oshamahue.login.LoginFragment
 import dagger.Component
 import javax.inject.Scope
 
-
-@Component(dependencies = [ApplicationComponent::class])
-@LoginScope
-interface LoginComponent {
-    fun inject(loginFragment: LoginFragment)
-}
-
 @Scope
 @Retention
-annotation class LoginScope
+annotation class FeatureScope
+
+@Component(dependencies = [ApplicationComponent::class])
+@FeatureScope
+interface LoginComponent {
+    @Component.Factory
+    interface Factory {
+        fun create(applicationComponent: ApplicationComponent): LoginComponent
+    }
+    fun inject(loginFragment: LoginFragment)
+}

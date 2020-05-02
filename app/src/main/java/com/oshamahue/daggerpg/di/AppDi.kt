@@ -8,12 +8,9 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Scope
 
-@Module
-class ApplicationModule {
-
-    @Provides
-    fun provideLoginRepository(loginApi: LoginApi) = LoginRepository(loginApi)
-}
+@Scope
+@Retention
+annotation class ApplicationScope
 
 @Component(modules = [ApplicationModule::class], dependencies = [RepositoryComponent::class])
 @ApplicationScope
@@ -26,6 +23,8 @@ interface ApplicationComponent {
     val loginRepository: LoginRepository
 }
 
-@Scope
-@Retention
-annotation class ApplicationScope
+@Module
+class ApplicationModule {
+    @Provides
+    fun provideLoginRepository(loginApi: LoginApi) = LoginRepository(loginApi)
+}

@@ -10,10 +10,15 @@ import retrofit2.Retrofit
 import retrofit2.create
 import javax.inject.Scope
 
-@Module
-class BaseUrlModule {
-    @Provides
-    fun provideBaseUrl() = "https://myprodurl.com"
+
+@Scope
+@Retention
+annotation class RepositoryScope
+
+@Component(modules = [RepositoryModule::class])
+@RepositoryScope
+interface RepositoryComponent {
+    val loginApi: LoginApi
 }
 
 @Module
@@ -25,16 +30,15 @@ class RepositoryModule {
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
         val retrofit = Retrofit.Builder().client(client).baseUrl(url).build()
         return retrofit.create()
+
     }
+    @Provides
+    fun provideBaseUrl() = "https://myprodurl.com"
 }
 
-@Component(modules = [RepositoryModule::class, BaseUrlModule::class])
-@RepositoryScope
-interface RepositoryComponent {
-    val loginApi: LoginApi
-}
 
-@Scope
-@Retention
-annotation class RepositoryScope
+
+
+
+
 
